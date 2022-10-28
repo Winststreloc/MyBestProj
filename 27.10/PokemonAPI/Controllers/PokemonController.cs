@@ -22,7 +22,7 @@ public class PokemonController : Controller
         var pokemons = _pokemonRepository.GetPokemons();
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
-        
+
         return Ok(pokemons);
     }
 
@@ -32,24 +32,38 @@ public class PokemonController : Controller
         var pokemon = _pokemonRepository.GetPokemon(pokemonId);
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
-        
+
         return Ok(pokemon);
     }
+
     [HttpDelete("{pokemonId}")]
     public IActionResult DeletePokemon(int pokemonId)
     {
         var pokemonToDelete = _pokemonRepository.GetPokemon(pokemonId);
 
         if (!ModelState.IsValid)
+        {
             return BadRequest(ModelState);
+        }
+
         _pokemonRepository.DeletePokemon(pokemonToDelete);
         return NoContent();
-
     }
 
     [HttpPost]
-    public IActionResult CreatePokemon(int ownerId, int categoryId, Pokemon pokemonCreate)
+    public IActionResult CreatePokemon(int ownerId, int categoryId, [FromBody] Pokemon pokemonCreate)
     {
-        return NoContent();
+        if (pokemonCreate == null)
+        {
+            return BadRequest(ModelState);
+        }
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        _pokemonRepository.CreatePokemon(ownerId, categoryId, pokemonCreate);
+
+        return Ok();
     }
 }
