@@ -16,7 +16,7 @@ public class PokemonRepository : IPokemonRepository
     public ICollection<Pokemon> GetPokemons()
     {
         return _context.Pokemon.OrderBy(p => p.Id).ToList();
-    }
+    } 
 
     public Pokemon GetPokemon(int Id)
     {
@@ -45,7 +45,7 @@ public class PokemonRepository : IPokemonRepository
         };
 
         _context.Add(pokemonOwner);
-
+            
         var pokemonCategory = new PokemonCategory()
         {
             Category = category,

@@ -48,10 +48,8 @@ public class PokemonController : Controller
     }
 
     [HttpPost]
-    public IActionResult CreatePokemon([FromQuery] int ownerId, [FromQuery] int catId,
-        [FromBody] Pokemon pokemonCreate)
+    public IActionResult CreatePokemon(int ownerId, int categoryId, Pokemon pokemonCreate)
     {
-        var pokemonMap = _mapper.Map<Pokemon>(pokemonCreate);
-        
+        return NoContent();
     }
 }
