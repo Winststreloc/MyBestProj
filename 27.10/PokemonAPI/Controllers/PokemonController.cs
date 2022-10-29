@@ -73,4 +73,15 @@ public class PokemonController : Controller
 
         return Ok();
     }
+
+    [HttpPut]
+    public IApplicationBuilder UpdatePokemon([FromQuery] int ownerId,[FromQuery] int categoryId,
+        [FromQuery] int pokemonId,[FromQuery] string pokemonName)
+    {
+        var pokemonCreate = new Pokemon()
+        {
+            Id = pokemonId,
+            Name = pokemonName,
+        };
+    }
 }

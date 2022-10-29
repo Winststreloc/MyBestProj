@@ -59,6 +59,6 @@ public class PokemonRepository : IPokemonRepository
 
     public void UpdatePokemon(int ownerId, int categoryId, Pokemon pokemon)
     {
-        throw new NotImplementedException();
+        _context.Update(pokemon);
     }
 }
