@@ -51,8 +51,15 @@ public class PokemonController : Controller
     }
 
     [HttpPost]
-    public IActionResult CreatePokemon(int ownerId, int categoryId, [FromBody] Pokemon pokemonCreate)
+    public IActionResult CreatePokemon([FromQuery] int ownerId,[FromQuery] int categoryId,
+        [FromQuery] int pokemonId,[FromQuery] string pokemonName)
     {
+        var pokemonCreate = new Pokemon()
+        {
+            Id = pokemonId,
+            Name = pokemonName,
+        };
+        
         if (pokemonCreate == null)
         {
             return BadRequest(ModelState);
