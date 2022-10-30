@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using PokemonAPI.Dto;
 using PokemonAPI.Interfaces;
 using PokemonAPI.Models;
 
@@ -6,20 +8,23 @@ namespace PokemonAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PokemonController : Controller
+public class PokemonController : ControllerBase
 {
     private readonly IPokemonRepository _pokemonRepository;
+    private readonly IMapper _mapper;
 
-    public PokemonController(IPokemonRepository pokemonRepository)
+    public PokemonController(IPokemonRepository pokemonRepository, IMapper mapper)
     {
         _pokemonRepository = pokemonRepository;
+        _mapper = mapper;
     }
 
     [HttpGet]
     [ProducesResponseType(200, Type = typeof(IEnumerable<Pokemon>))]
+    [ProducesResponseType(400)]
     public IActionResult GetPokemons()
     {
-        var pokemons = _pokemonRepository.GetPokemons();
+        var pokemons = _mapper.Map<List<PokemonDto>>(_pokemonRepository.GetPokemons());
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
@@ -27,9 +32,17 @@ public class PokemonController : Controller
     }
 
     [HttpGet("{pokemonId}")]
+    [ProducesResponseType(200, Type = typeof(IEnumerable<Pokemon>))]
+    [ProducesResponseType(400)]
     public IActionResult GetPokemon(int pokemonId)
     {
-        var pokemon = _pokemonRepository.GetPokemon(pokemonId);
+        if (!_pokemonRepository.PokemonExists(pokemonId))
+        {
+            return NotFound();
+        }
+        
+        var pokemon = _mapper.Map<PokemonDto>(_pokemonRepository.GetPokemon(pokemonId));
+        
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
@@ -59,11 +72,7 @@ public class PokemonController : Controller
             Id = pokemonId,
             Name = pokemonName,
         };
-        
-        if (pokemonCreate == null)
-        {
-            return BadRequest(ModelState);
-        }
+
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);

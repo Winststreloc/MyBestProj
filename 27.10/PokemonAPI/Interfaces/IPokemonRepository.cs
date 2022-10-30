@@ -6,7 +6,7 @@ public interface IPokemonRepository
 {
     ICollection<Pokemon> GetPokemons();
     Pokemon GetPokemon(int Id);
-    Pokemon GetPokemon(string Name);
+    bool PokemonExists(int Id);
     void CreatePokemon(int ownerId, int categoryId, Pokemon pokemon);
     void UpdatePokemon(Pokemon pokemon);
     void DeletePokemon(Pokemon pokemon);

@@ -7,7 +7,7 @@ namespace PokemonAPI.Repository;
 public class PokemonRepository : IPokemonRepository
 {
     private readonly DataContext _context;
-
+    
     public PokemonRepository(DataContext context)
     {
         _context = context;
@@ -23,11 +23,11 @@ public class PokemonRepository : IPokemonRepository
         return _context.Pokemon.Where(p => p.Id == Id).FirstOrDefault();
     }
 
-    public Pokemon GetPokemon(string Name)
+    public bool PokemonExists(int pokemonId)
     {
-        return _context.Pokemon.Where(p => p.Name == Name).FirstOrDefault();
+        return _context.Pokemon.Any(p => p.Id == pokemonId);
     }
-
+    
     public void DeletePokemon(Pokemon pokemon)
     {
         _context.Remove(pokemon);
