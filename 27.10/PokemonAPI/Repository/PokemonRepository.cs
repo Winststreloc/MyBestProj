@@ -57,7 +57,7 @@ public class PokemonRepository : IPokemonRepository
         _context.Add(pokemon);
     }
 
-    public void UpdatePokemon(int ownerId, int categoryId, Pokemon pokemon)
+    public void UpdatePokemon(Pokemon pokemon)
     {
         _context.Update(pokemon);
     }

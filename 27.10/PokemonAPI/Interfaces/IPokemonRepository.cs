@@ -8,7 +8,7 @@ public interface IPokemonRepository
     Pokemon GetPokemon(int Id);
     Pokemon GetPokemon(string Name);
     void CreatePokemon(int ownerId, int categoryId, Pokemon pokemon);
-    void UpdatePokemon(int ownerId, int categoryId, Pokemon pokemon);
+    void UpdatePokemon(Pokemon pokemon);
     void DeletePokemon(Pokemon pokemon);
 
 }
