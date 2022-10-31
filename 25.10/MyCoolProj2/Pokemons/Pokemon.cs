@@ -11,7 +11,6 @@ namespace MyCoolProj2.Pokemons
         public int Id { get; set; }
         public string Name { get; set; }
         public DateTime BirthDate { get; set; }
-        private readonly IConfiguration _config;
 
         public Pokemon()
         {
@@ -29,15 +28,12 @@ namespace MyCoolProj2.Pokemons
 
         public Pokemon GetPokemon()
         {
-            return new Pokemon();
+            return Deserialize.DeserializeFile();
         }
 
         public string ReadPokemon()
         {
-            FileStream fs = new FileStream(_config.GetValue<string>("Datafile"), FileMode.OpenOrCreate);
-            StreamReader streamReader = new StreamReader(fs);
-
-            return streamReader.ReadToEnd();
+            return Deserialize.ReadFile();
         }
     }
     

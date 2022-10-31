@@ -7,12 +7,12 @@ namespace MyCoolProj2.Controllers
 {
     [ApiController]
     [Route("App/[controller]")]
-    public class BecauseICan : Controller
+    public class BecauseICanController : Controller
     {
         private readonly IPokemon _pokemon;
         private readonly IConfiguration _config;
 
-        public BecauseICan(IConfiguration config, IPokemon pokemon)
+        public BecauseICanController(IConfiguration config, IPokemon pokemon)
         {
             _config = config;
             _pokemon = pokemon;
@@ -24,13 +24,13 @@ namespace MyCoolProj2.Controllers
             return _config.GetValue<string>("Datafile");
         }
 
-        [HttpGet("getDataFilePokemon")]
+        [HttpGet("GET-POKEMON")]
         public IPokemon GetPokemon()
         {
             return _pokemon.GetPokemon();
         }
 
-        [HttpGet("getFile")]
+        [HttpGet("ReadFile")]
         public string ReadPokemonFile()
         {
             return _pokemon.ReadPokemon();
