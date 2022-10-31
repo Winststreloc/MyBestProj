@@ -10,5 +10,5 @@ public interface IPokemonRepository
     void CreatePokemon(int ownerId, int categoryId, Pokemon pokemon);
     void UpdatePokemon(Pokemon pokemon);
     void DeletePokemon(Pokemon pokemon);
-
+    void Save();
 }

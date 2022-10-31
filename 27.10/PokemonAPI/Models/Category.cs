@@ -1,9 +1,8 @@
-﻿namespace PokemonAPI.Models
+﻿namespace PokemonAPI.Models;
+
+public class Category
 {
-    public class Category
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public IEnumerable<PokemonCategory> PokemonCategories { get; set; }
-    }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public IEnumerable<PokemonCategory> PokemonCategories { get; set; }
 }

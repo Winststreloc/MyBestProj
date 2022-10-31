@@ -6,14 +6,15 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PokemonAPI.Data;
+using DbContext = PokemonAPI.Data.DbContext;
 
 #nullable disable
 
 namespace PokemonAPI.Migrations
 {
-    [DbContext(typeof(DataContext))]
-    [Migration("20221025221918_Initial")]
-    partial class Initial
+    [DbContext(typeof(DbContext))]
+    [Migration("20221031120623_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -10,8 +10,8 @@ namespace PokemonAPI.Controllers;
 [ApiController]
 public class PokemonController : ControllerBase
 {
-    private readonly IPokemonRepository _pokemonRepository;
     private readonly IMapper _mapper;
+    private readonly IPokemonRepository _pokemonRepository;
 
     public PokemonController(IPokemonRepository pokemonRepository, IMapper mapper)
     {
@@ -25,71 +25,57 @@ public class PokemonController : ControllerBase
     public IActionResult GetPokemons()
     {
         var pokemons = _mapper.Map<List<PokemonDto>>(_pokemonRepository.GetPokemons());
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
 
         return Ok(pokemons);
     }
 
-    [HttpGet("{pokemonId}")]
+    [HttpGet("{pokemonId:int}")]
     [ProducesResponseType(200, Type = typeof(IEnumerable<Pokemon>))]
     [ProducesResponseType(400)]
-    public IActionResult GetPokemon(int pokemonId)
+    public IActionResult GetPokemon([FromRoute]int pokemonId)
     {
-        if (!_pokemonRepository.PokemonExists(pokemonId))
-        {
-            return NotFound();
-        }
-        
+        if (!_pokemonRepository.PokemonExists(pokemonId)) return NotFound();
+
         var pokemon = _mapper.Map<PokemonDto>(_pokemonRepository.GetPokemon(pokemonId));
-        
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
 
         return Ok(pokemon);
     }
 
-    [HttpDelete("{pokemonId}")]
-    public IActionResult DeletePokemon(int pokemonId)
+    [HttpDelete("{pokemonId:int}")]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(200)]
+    public IActionResult DeletePokemon([FromRoute]int pokemonId)
     {
+        if (!_pokemonRepository.PokemonExists(pokemonId)) return NotFound();
         var pokemonToDelete = _pokemonRepository.GetPokemon(pokemonId);
 
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
+        if (!ModelState.IsValid) return BadRequest(ModelState);
 
         _pokemonRepository.DeletePokemon(pokemonToDelete);
         return NoContent();
     }
 
     [HttpPost]
-    public IActionResult CreatePokemon([FromQuery] int ownerId,[FromQuery] int categoryId,
-        [FromQuery] int pokemonId,[FromQuery] string pokemonName)
+    public IActionResult CreatePokemon([FromRoute] int ownerId, [FromRoute] int categoryId,
+        [FromBody] PokemonDto pokemonDto)
     {
-        var pokemonCreate = new Pokemon()
-        {
-            Id = pokemonId,
-            Name = pokemonName,
-        };
+        if (pokemonDto == null) return BadRequest(pokemonDto);
 
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
+        if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        _pokemonRepository.CreatePokemon(ownerId, categoryId, pokemonCreate);
+        var pokemon = _mapper.Map<Pokemon>(pokemonDto);
+        _pokemonRepository.CreatePokemon(ownerId, categoryId, pokemon);
 
         return Ok();
     }
 
     [HttpPut]
-    public IActionResult UpdatePokemon([FromQuery] int pokemonId,[FromQuery] string pokemonName)
+    public IActionResult UpdatePokemon([FromRoute] int pokemonId, [FromRoute] string pokemonName)
     {
-        var pokemonCreate = new Pokemon()
+        var pokemonCreate = new Pokemon
         {
             Id = pokemonId,
-            Name = pokemonName,
+            Name = pokemonName
         };
         _pokemonRepository.UpdatePokemon(pokemonCreate);
         return Ok();
