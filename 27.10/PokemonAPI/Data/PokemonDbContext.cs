@@ -3,9 +3,9 @@ using PokemonAPI.Models;
 
 namespace PokemonAPI.Data;
 
-public class DbContext : Microsoft.EntityFrameworkCore.DbContext
+public class PokemonDbContext : Microsoft.EntityFrameworkCore.DbContext
 {
-    public DbContext(DbContextOptions<DbContext> options) : base(options)
+    public PokemonDbContext(DbContextOptions<PokemonDbContext> options) : base(options)
     {
         Database.EnsureCreated();
     }

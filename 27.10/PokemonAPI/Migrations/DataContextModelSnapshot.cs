@@ -5,13 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PokemonAPI.Data;
-using DbContext = PokemonAPI.Data.DbContext;
 
 #nullable disable
 
 namespace PokemonAPI.Migrations
 {
-    [DbContext(typeof(DbContext))]
+    [DbContext(typeof(PokemonDbContext))]
     partial class DataContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

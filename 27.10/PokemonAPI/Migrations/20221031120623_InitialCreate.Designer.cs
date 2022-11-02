@@ -6,13 +6,12 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PokemonAPI.Data;
-using DbContext = PokemonAPI.Data.DbContext;
 
 #nullable disable
 
 namespace PokemonAPI.Migrations
 {
-    [DbContext(typeof(DbContext))]
+    [DbContext(typeof(PokemonDbContext))]
     [Migration("20221031120623_InitialCreate")]
     partial class InitialCreate
     {

@@ -32,9 +32,12 @@ public class PokemonController : ControllerBase
     [HttpGet("{pokemonId:int}")]
     [ProducesResponseType(200, Type = typeof(IEnumerable<Pokemon>))]
     [ProducesResponseType(400)]
-    public IActionResult GetPokemon([FromRoute]int pokemonId)
+    public IActionResult GetPokemon([FromRoute] int pokemonId)
     {
-        if (!_pokemonRepository.PokemonExists(pokemonId)) return NotFound();
+        if (!_pokemonRepository.PokemonExists(pokemonId))
+        {
+            return NotFound();
+        }
 
         var pokemon = _mapper.Map<PokemonDto>(_pokemonRepository.GetPokemon(pokemonId));
 
@@ -44,12 +47,14 @@ public class PokemonController : ControllerBase
     [HttpDelete("{pokemonId:int}")]
     [ProducesResponseType(400)]
     [ProducesResponseType(200)]
-    public IActionResult DeletePokemon([FromRoute]int pokemonId)
+    public IActionResult DeletePokemon([FromRoute] int pokemonId)
     {
-        if (!_pokemonRepository.PokemonExists(pokemonId)) return NotFound();
-        var pokemonToDelete = _pokemonRepository.GetPokemon(pokemonId);
+        if (!_pokemonRepository.PokemonExists(pokemonId))
+        {
+            return NotFound();
+        }
 
-        if (!ModelState.IsValid) return BadRequest(ModelState);
+        var pokemonToDelete = _pokemonRepository.GetPokemon(pokemonId);
 
         _pokemonRepository.DeletePokemon(pokemonToDelete);
         return NoContent();
@@ -59,9 +64,15 @@ public class PokemonController : ControllerBase
     public IActionResult CreatePokemon([FromRoute] int ownerId, [FromRoute] int categoryId,
         [FromBody] PokemonDto pokemonDto)
     {
-        if (pokemonDto == null) return BadRequest(pokemonDto);
+        if (pokemonDto == null)
+        {
+            return BadRequest(pokemonDto);
+        }
 
-        if (!ModelState.IsValid) return BadRequest(ModelState);
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
 
         var pokemon = _mapper.Map<Pokemon>(pokemonDto);
         _pokemonRepository.CreatePokemon(ownerId, categoryId, pokemon);

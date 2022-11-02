@@ -6,9 +6,9 @@ namespace PokemonAPI.Repository;
 
 public class PokemonRepository : IPokemonRepository
 {
-    private readonly DbContext _context;
+    private readonly PokemonDbContext _context;
 
-    public PokemonRepository(DbContext context)
+    public PokemonRepository(PokemonDbContext context)
     {
         _context = context;
     }
@@ -67,6 +67,6 @@ public class PokemonRepository : IPokemonRepository
 
     public void Save()
     {
-        var saved = _context.SaveChanges();
+        _context.SaveChanges();
     }
 }

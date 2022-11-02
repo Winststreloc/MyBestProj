@@ -5,16 +5,16 @@ namespace PokemonAPI;
 
 public class Seed
 {
-    private readonly DbContext _dbContext;
+    private readonly PokemonDbContext _pokemonDbContext;
 
-    public Seed(DbContext context)
+    public Seed(PokemonDbContext context)
     {
-        _dbContext = context;
+        _pokemonDbContext = context;
     }
 
     public void SeedDataContext()
     {
-        if (!_dbContext.PokemonOwners.Any())
+        if (!_pokemonDbContext.PokemonOwners.Any())
         {
             var pokemonOwners = new List<PokemonOwner>
             {
@@ -142,8 +142,8 @@ public class Seed
                     }
                 }
             };
-            _dbContext.PokemonOwners.AddRange(pokemonOwners);
-            _dbContext.SaveChanges();
+            _pokemonDbContext.PokemonOwners.AddRange(pokemonOwners);
+            _pokemonDbContext.SaveChanges();
         }
     }
 }

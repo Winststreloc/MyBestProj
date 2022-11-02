@@ -3,11 +3,11 @@ using PokemonAPI;
 using PokemonAPI.Data;
 using PokemonAPI.Interfaces;
 using PokemonAPI.Repository;
-using DbContext = PokemonAPI.Data.DbContext;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 
 builder.Services.AddControllers();
 builder.Services.AddTransient<Seed>();
@@ -16,7 +16,7 @@ builder.Services.AddScoped<IPokemonRepository, PokemonRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<DbContext>(options =>
+builder.Services.AddDbContext<PokemonDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
