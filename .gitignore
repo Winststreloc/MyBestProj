@@ -612,3 +612,4 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp,dotnetcore,aspnetcore,rider
+/27.10/PokemonAPI/appsettings.Local.json
