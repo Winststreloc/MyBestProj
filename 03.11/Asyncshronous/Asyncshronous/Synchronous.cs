@@ -8,7 +8,7 @@ namespace ASYNCAWAIT
     //create cappuchino
     public static class Synchronous
     {
-        public static void Main(string[] args)
+        /*public static void Main(string[] args)
         {
             Holder holder = new Holder();
             
@@ -23,7 +23,7 @@ namespace ASYNCAWAIT
             ShakeMilk shakeMilk = CreateShakeMilk(milk);
             Capuchino capuchino = MakeCapuchino(espesso, shakeMilk);
 
-        }
+        }*/
         public static GroundCofee GrindCofee()
         {
             Console.WriteLine("Start grinding cofee");
@@ -67,12 +67,12 @@ namespace ASYNCAWAIT
             return new ShakeMilk();
         }
 
-        public static Capuchino MakeCapuchino(Espesso espesso, ShakeMilk milk)
+        public static Cappuchino MakeCapuchino(Espesso espesso, ShakeMilk milk)
         {
             Console.WriteLine("Creating capuchino");
             Thread.Sleep(5000);
             Console.WriteLine("Capuchino ready");
-            return new Capuchino();
+            return new Cappuchino();
         }
         
         

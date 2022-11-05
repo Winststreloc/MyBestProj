@@ -1,6 +1,6 @@
 ﻿namespace ASYNCAWAIT.Models
 {
-    public class Capuchino
+    public class Cappuchino
     {
         
     }
