@@ -1,6 +1,6 @@
 ﻿namespace ASYNCAWAIT
 {
-    public class Aynchronous
+    public static class Aynchronous
     {
         
     }
