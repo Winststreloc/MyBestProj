@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using ASYNCAWAIT.Models;
@@ -9,72 +10,73 @@ namespace Asyncshronous
     {
         public static async Task Main(string[] args)
         {
-
-            GrindCofee();
-            AlignCofee();
-            CreateCoffeeTablet();
-            var espesso = CreateEspesso();
-            var milk = TakeMilkInFridge();
-            var shakeMilk = CreateShakeMilk();
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            CancellationToken token = cancellationTokenSource.Token;
             
-            await espesso;
-            await milk;
-            await shakeMilk;
-            
-            Cappuchino capuchino = await MakeCapuchino();
+            GrindCofee(token);
+            EndApp(cancellationTokenSource);
+            AlignCofee(token);
+            CreateCoffeeTablet(token);
+            var espesso = CreateEspesso(token);
+            Milk milk = await TakeMilkInFridge(token);
+            var shakeMilk = CreateShakeMilk(milk, token);
+            var task = new List<Task>() { espesso, shakeMilk };
+            EndApp(cancellationTokenSource);
+            if (!Task.WaitAll(task.ToArray(), 20000))
+            {
+                Console.WriteLine("Lifetime espresso 30 sekonds");
+            }
 
-            // Holder holder = new Holder();
-            // //create espresso
-            // GroundCofee groundCofee = await GrindCofee();
-            // AlignCofee();
-            // CoffeeTablet coffeeTablet =  CreateCoffeeTablet(groundCofee, holder);
-            // Espesso espesso = await CreateEspesso(coffeeTablet, holder);
-            // //create milk shake
-            // await TakeMilkInFridge();
-            // ShakeMilk shakeMilk = await CreateShakeMilk();
-            // Capuchino _ = await MakeCapuchino(espesso, shakeMilk);
+            MakeCapuchino(token);
         }
 
-        private static async Task<GroundCofee> GrindCofee()
+        private static async Task EndApp(CancellationTokenSource cancellationToken)
+        {
+            if (Console.ReadLine() == "cancel")
+            {
+                cancellationToken.Cancel();                
+            }
+        }
+        private static async Task GrindCofee(CancellationToken cancellationToken)
         {
             Console.WriteLine($"Start grinding coffee{Thread.CurrentThread.ManagedThreadId}");
-            Thread.Sleep(8000);
-            
+            await Task.Delay(8000);
+
             Console.WriteLine($"End grinding cofee{Thread.CurrentThread.ManagedThreadId}");
-            return new GroundCofee();
         }
 
-        private static async Task AlignCofee()
+        private static async Task AlignCofee(CancellationToken cancellationToken)
         {
             Console.WriteLine($"Start align coffee{Thread.CurrentThread.ManagedThreadId}");
             Thread.Sleep(2000);
             Console.WriteLine("End align");
         }
 
-        private static CoffeeTablet CreateCoffeeTablet()
+        private static CoffeeTablet CreateCoffeeTablet(CancellationToken cancellationToken)
         {
             Console.WriteLine($"CreateCoffeeTablet{Thread.CurrentThread.ManagedThreadId}");
             return new CoffeeTablet();
         }
 
-        private static async Task<Espesso> CreateEspesso()
+        private static async Task<Espesso> CreateEspesso(CancellationToken cancellationToken)
         {
             Console.WriteLine($"Start create espresso{Thread.CurrentThread.ManagedThreadId}");
             await Task.Delay(10000);
-            
+
             Console.WriteLine("Espresso ready");
             return new Espesso();
         }
 
-        private static async Task TakeMilkInFridge()
+        private static async Task<Milk> TakeMilkInFridge(CancellationToken cancellationToken)
         {
             Console.WriteLine($"Take milk {Thread.CurrentThread.ManagedThreadId}");
             Task.Delay(2000);
             Console.WriteLine("Pour milk into the pitcher");
             Task.Delay(1000);
+            return new Milk();
         }
 
-        private static async Task<ShakeMilk> CreateShakeMilk()
+        private static async Task<ShakeMilk> CreateShakeMilk(Milk milk, CancellationToken cancellationToken)
         {
             Console.WriteLine($"Start creating shake milk{Thread.CurrentThread.ManagedThreadId}");
             await Task.Delay(5000);
@@ -82,7 +84,7 @@ namespace Asyncshronous
             return new ShakeMilk();
         }
 
-        private static async Task<Cappuchino> MakeCapuchino()
+        private static async Task<Cappuchino> MakeCapuchino(CancellationToken cancellationToken)
         {
             Console.WriteLine($"Creating capuchino{Thread.CurrentThread.ManagedThreadId}");
             await Task.Delay(5000);
