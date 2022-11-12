@@ -34,7 +34,7 @@ public class PokemonController : ControllerBase
     [ProducesResponseType(400)]
     public IActionResult GetPokemon([FromRoute] int pokemonId)
     {
-        if (!_pokemonRepository.PokemonExists(pokemonId))
+        if (_pokemonRepository.PokemonExists(pokemonId) != Task.CompletedTask)
         {
             return NotFound();
         }
@@ -47,14 +47,14 @@ public class PokemonController : ControllerBase
     [HttpDelete("{pokemonId:int}")]
     [ProducesResponseType(400)]
     [ProducesResponseType(200)]
-    public IActionResult DeletePokemon([FromRoute] int pokemonId)
+    public async Task<IActionResult> DeletePokemon([FromRoute] int pokemonId)
     {
-        if (!_pokemonRepository.PokemonExists(pokemonId))
+        if (_pokemonRepository.PokemonExists(pokemonId) != Task.CompletedTask)
         {
             return NotFound();
         }
 
-        var pokemonToDelete = _pokemonRepository.GetPokemon(pokemonId);
+        Pokemon pokemonToDelete = await _pokemonRepository.GetPokemon(pokemonId);
 
         _pokemonRepository.DeletePokemon(pokemonToDelete);
         return NoContent();

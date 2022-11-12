@@ -3,11 +3,11 @@ using PokemonAPI.Models;
 
 namespace PokemonAPI.Data;
 
-public class PokemonDbContext : Microsoft.EntityFrameworkCore.DbContext
+public class PokemonDbContext : DbContext
 {
     public PokemonDbContext(DbContextOptions<PokemonDbContext> options) : base(options)
     {
-        Database.EnsureCreated();
+
     }
 
     public DbSet<Category> Categories { get; set; }
