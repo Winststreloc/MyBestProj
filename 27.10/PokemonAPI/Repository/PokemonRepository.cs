@@ -1,4 +1,5 @@
-﻿using PokemonAPI.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using PokemonAPI.Data;
 using PokemonAPI.Interfaces;
 using PokemonAPI.Models;
 
@@ -12,20 +13,19 @@ public class PokemonRepository : IPokemonRepository
     {
         _context = context;
     }
-
-    public ICollection<Pokemon> GetPokemons()
+    public async Task<ICollection<Pokemon>> GetPokemons()
     {
-        return _context.Pokemon.OrderBy(p => p.Id).ToList();
+        return await _context.Pokemon.OrderBy(p => p.Id).ToListAsync();
     }
 
-    public Pokemon GetPokemon(int Id)
+    public async Task<Pokemon> GetPokemon(int Id)
     {
-        return _context.Pokemon.Where(p => p.Id == Id).FirstOrDefault();
+        return await _context.Pokemon.Where(p => p.Id == Id).FirstOrDefaultAsync();
     }
 
-    public bool PokemonExists(int pokemonId)
+    public async Task<bool> PokemonExists(int pokemonId)
     {
-        return _context.Pokemon.Any(p => p.Id == pokemonId);
+        return await _context.Pokemon.AnyAsync(p => p.Id == pokemonId);
     }
 
     public void DeletePokemon(Pokemon pokemon)
@@ -34,10 +34,10 @@ public class PokemonRepository : IPokemonRepository
         Save();
     }
 
-    public void CreatePokemon(int ownerId, int categoryId, Pokemon pokemon)
+    public async Task CreatePokemon(int ownerId, int categoryId, Pokemon pokemon)
     {
-        var pokemonOwnerEntity = _context.Owners.Where(a => a.Id == ownerId).FirstOrDefault();
-        var category = _context.Categories.Where(a => a.Id == categoryId).FirstOrDefault();
+        Owner pokemonOwnerEntity = await _context.Owners.Where(a => a.Id == ownerId).FirstOrDefaultAsync();
+        Category category = await _context.Categories.Where(a => a.Id == categoryId).FirstOrDefaultAsync();
 
         var pokemonOwner = new PokemonOwner
         {
@@ -45,7 +45,7 @@ public class PokemonRepository : IPokemonRepository
             Pokemon = pokemon
         };
 
-        _context.Add(pokemonOwner);
+        await _context.AddAsync(pokemonOwner);
 
         var pokemonCategory = new PokemonCategory
         {
@@ -53,9 +53,9 @@ public class PokemonRepository : IPokemonRepository
             Pokemon = pokemon
         };
 
-        _context.Add(pokemonCategory);
+        await _context.AddAsync(pokemonCategory);
 
-        _context.Add(pokemon);
+        await _context.AddAsync(pokemon);
         Save();
     }
 

@@ -4,10 +4,10 @@ namespace PokemonAPI.Interfaces;
 
 public interface IPokemonRepository
 {
-    ICollection<Pokemon> GetPokemons();
-    Pokemon GetPokemon(int Id);
-    bool PokemonExists(int Id);
-    void CreatePokemon(int ownerId, int categoryId, Pokemon pokemon);
+    Task<ICollection<Pokemon>> GetPokemons();
+    Task<Pokemon> GetPokemon(int Id);
+    Task<bool> PokemonExists(int Id);
+    Task CreatePokemon(int ownerId, int categoryId, Pokemon pokemon);
     void UpdatePokemon(Pokemon pokemon);
     void DeletePokemon(Pokemon pokemon);
     void Save();
