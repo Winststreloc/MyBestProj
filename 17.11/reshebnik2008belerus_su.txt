@@ -1,0 +1,41 @@
+1 37
+2 78
+3 14
+4 1
+5 0
+6  0
+7 0
+8  0
+9)
+select count(Persons.Name) From Persons
+join PersonsStudySubjects on Persons.Id = PersonsStudySubjects.StudentId
+join StudySubjects on StudySubjects.Id = PersonsStudySubjects.SubjectId
+join Universities on Universities.Id = StudySubjects.UniversityId
+where Persons.Age > 30
+group by Universities.Id
+
+10) 
+select avg(Age) as 'average' from Persons
+join PersonsStudySubjects on Persons.Id = PersonsStudySubjects.StudentId
+join StudySubjects on StudySubjects.Id = PersonsStudySubjects.SubjectId
+join Universities on Universities.Id = StudySubjects.UniversityId
+group by Universities.Id
+
+11)
+select count(Persons.Name) from Persons
+join PersonsStudySubjects on Persons.Id = PersonsStudySubjects.StudentId
+join Addresses on Persons.AddressId = Addresses.Id
+join Universities on Universities.AddressId = Addresses.Id
+where Persons.Age > 30
+group by Universities.AddressId
+
+12)
+select Persons.Name, Addresses.City from Persons
+join PersonsStudySubjects on Persons.Id = PersonsStudySubjects.StudentId
+join Addresses on Addresses.Id = Persons.AddressId
+join Universities on Addresses.Id = Universities.AddressId
+
+13)
+select avg(Persons.Age) as 'average' from Persons
+join Addresses on Persons.AddressId = Addresses.Id
+group by Addresses.City
