@@ -39,14 +39,14 @@ namespace HomeWork09._12
             return await users;
         }
 
-        [HttpPost("return-book")]
+        [HttpPost("return-book-task10")]
         public async Task<IActionResult> ReturnBook([FromQuery]string userEmail, [FromQuery]string bookName)
         {
             await _repository.ReturnBook(userEmail, bookName);
             return NoContent();
         }
 
-        [HttpGet("return-book")]
+        [HttpGet("get")]
         public IActionResult Get()
         {
             return Ok("ok");
