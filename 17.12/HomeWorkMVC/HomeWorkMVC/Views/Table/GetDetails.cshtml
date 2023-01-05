@@ -1,0 +1,30 @@
+﻿@model HomeWorkMVC.Models.SupportRequest
+
+@{
+    ViewData["Title"] = "DetailsRequest";
+}
+<h2>Topic: @Model.Topic</h2>
+<div class="accordion accordion-flush" id="accordionFlushExample" style="width: 500px">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                Description
+            </button>
+        </h2>
+        <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample" style="">
+            <div class="accordion-body">@Model.Description</div>
+        </div>
+    </div>
+</div>
+
+<p class="h5">Specialist: @Model.SupportSpecialist.FullName</p>
+<p class="h5">Department: @Model.Department.Name</p>
+
+<select class="form-select" aria-label="Default select example" style="width: 500px">
+    <option selected>@Model.SupportRequestStatus</option>
+    <option value="1">Open</option>
+    <option value="2">Close</option>
+    <option value="3">Awaiting</option>
+</select>
+
+

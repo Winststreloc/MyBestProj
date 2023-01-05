@@ -1,4 +1,5 @@
-﻿@model IEnumerable<HomeWorkMVC.Models.SupportRequestTable>
+﻿@using HomeWorkMVC.Controllers
+@model IEnumerable<HomeWorkMVC.Models.SupportRequestTable>
 
 @{
     ViewData["Title"] = "Table";
@@ -17,7 +18,9 @@
     @foreach (var request in Model)
     {
         <tr>
-            <td>@request.Topic</td>
+            <td>
+                <a asp-action="GetDetails" asp-route-id="@request.Id.ToString()">@request.Topic</a>
+            </td>
             <td>@request.DepartmentName</td>
             <td>@request.SpecialistName</td>
             <td>@request.Status</td>
