@@ -56,6 +56,34 @@ namespace HomeWorkMVC
                 context.AddRange(supportSpecialists);
                 context.SaveChanges();
             }
+
+            if (!context.SupportRequests.Any())
+            {
+                var supportRequests = new List<SupportRequest>()
+                {
+                    new SupportRequest()
+                    {
+                        Id = new Guid("7e215efc-1c83-4e3d-9bec-f70f0483a4f2"),
+                        Topic = "Studing in Course",
+                        Description = "offline studying in courses is bette than online studying",
+                        SupportRequestStatus = "Open",
+                        SupportSpecialistId = Guid.Parse("4246f8c4-dfb2-402b-bdc3-3c6dc03d79cf"),
+                        DepartmentId = Guid.Parse("772a8f0e-c3dd-43a1-b29d-1c8f13a43bed")
+                    },
+                    new SupportRequest()
+                    {
+                        Id = new Guid("cb36dc9d-0322-44f3-b25c-8b3576c904ea"),
+                        Topic = "Kawhi Leonard in Clippers",
+                        Description = "When Kawhi Leonard back in Clippers",
+                        SupportRequestStatus = "Open",
+                        SupportSpecialistId = Guid.Parse("0748183F-ED1D-484B-A38F-067BC88514AD"),
+                        DepartmentId = Guid.Parse("AA6DA2BD-B504-48FD-B3DE-5427E84D7FE1")
+                    },
+                    
+                };
+                context.AddRange(supportRequests);
+                context.SaveChanges();
+            }
             
         }
     }
