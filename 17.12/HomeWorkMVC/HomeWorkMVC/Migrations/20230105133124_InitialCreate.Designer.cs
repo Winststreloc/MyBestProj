@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HomeWorkMVC.Migrations
 {
     [DbContext(typeof(SupportDbContext))]
-    [Migration("20230105114913_InitialCreate")]
+    [Migration("20230105133124_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,6 +41,9 @@ namespace HomeWorkMVC.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("DepartmentId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -54,6 +57,8 @@ namespace HomeWorkMVC.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
 
                     b.HasIndex("SupportSpecialistId");
 
@@ -81,6 +86,12 @@ namespace HomeWorkMVC.Migrations
 
             modelBuilder.Entity("HomeWorkMVC.Models.SupportRequest", b =>
                 {
+                    b.HasOne("HomeWorkMVC.Models.Department", "Department")
+                        .WithMany("SupportRequests")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("HomeWorkMVC.Models.SupportSpecialist", "SupportSpecialist")
                         .WithMany("SupportRequests")
                         .HasForeignKey("SupportSpecialistId")

@@ -1,0 +1,27 @@
+﻿@model IEnumerable<HomeWorkMVC.Models.SupportRequestTable>
+
+@{
+    ViewData["Title"] = "Table";
+}
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Тема запроса</th>
+        <th scope="col">Отдел поддержки</th>
+        <th scope="col">Специалист</th>
+        <th scope="col">Статус</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var request in Model)
+    {
+        <tr>
+            <td>@request.Topic</td>
+            <td>@request.DepartmentName</td>
+            <td>@request.SpecialistName</td>
+            <td>@request.Status</td>
+        </tr>
+    }
+    </tbody>
+</table>

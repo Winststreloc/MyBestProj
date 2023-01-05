@@ -16,9 +16,6 @@ namespace HomeWorkMVC.Data
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Department>()
-                .HasKey(d => d.Id);
-            
             modelBuilder.Entity<SupportSpecialist>()
                 .HasKey(ss => ss.Id);
             modelBuilder.Entity<SupportSpecialist>()
@@ -34,7 +31,11 @@ namespace HomeWorkMVC.Data
                 .WithMany(x => x.SupportRequests)
                 .HasForeignKey(x => x.SupportSpecialistId)
                 .OnDelete(DeleteBehavior.NoAction);
-            
+            modelBuilder.Entity<SupportRequest>()
+                .HasOne(x => x.Department)
+                .WithMany(x => x.SupportRequests)
+                .HasForeignKey(x => x.DepartmentId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

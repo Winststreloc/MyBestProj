@@ -10,5 +10,7 @@ namespace HomeWorkMVC.Models
         public string SupportRequestStatus { get; set; }
         public Guid SupportSpecialistId { get; set; }
         public SupportSpecialist SupportSpecialist { get; set; }
+        public Guid DepartmentId { get; set; }
+        public Department Department { get; set; }
     }
 }
