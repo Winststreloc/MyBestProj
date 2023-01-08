@@ -1,6 +1,6 @@
 ﻿@using HomeWorkMVC.Service
 @model HomeWorkMVC.Models.SupportRequest
-@inject GetAllStatuses GetAllStatuses
+@inject GetAllSelect GetAllSelect
 
 @{
     ViewData["Title"] = "DetailsRequest";
@@ -26,15 +26,12 @@
     <p class="h5" name="fullNameSupport">Specialist: @Model.SupportSpecialist.FullName</p>
     <p class="h5" name="department">Department: @Model.Department.Name</p>
     <select class="form-select" aria-label="Default select example" style="width: 500px" name="status">
-        <option selected>@Model.Status.ToString()</option>
-
-        @foreach (var status in @GetAllStatuses.AllStatuses())
+        @foreach (var status in @GetAllSelect.AllStatuses())
         {
-            <select value="@status">@status</select>
+            <option value="@status">@status.StatusName</option>
         }
     </select>
-    <button class="btn btn-success">Save</button>
-    <button class="send-ajax">Send</button>
+    <button class="btn btn-primary" type="submit">Save</button>
 </form>
 
 
@@ -59,7 +56,7 @@ function SendData(){
 
 
 document.onload(() => {
-    let buttonSend = document.getElementsByClassName("send-ajax");
+    let buttonSend = document.getElementsByClassName("btn btn-primary");
     buttonSend.onclick(SendData());
 })
 </script>

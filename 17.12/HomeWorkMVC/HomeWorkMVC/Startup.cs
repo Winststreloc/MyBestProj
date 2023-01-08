@@ -1,4 +1,6 @@
 using HomeWorkMVC.Data;
+using HomeWorkMVC.Interface;
+using HomeWorkMVC.Repository;
 using HomeWorkMVC.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,7 +28,9 @@ namespace HomeWorkMVC
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
-            services.AddScoped<GetAllStatuses>();
+            services.AddScoped<GetAllSelect>();
+            services.AddScoped<ISupportRequestRepository, SupportrequestRepository>();
+            services.AddScoped<IRandomSpecialistService, RandomSpecialistService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

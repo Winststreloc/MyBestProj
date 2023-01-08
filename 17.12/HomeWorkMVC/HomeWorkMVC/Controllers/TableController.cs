@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using HomeWorkMVC.Data;
+using HomeWorkMVC.DTO;
+using HomeWorkMVC.Interface;
 using HomeWorkMVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,46 +11,29 @@ namespace HomeWorkMVC.Controllers
 {
     public class TableController : Controller
     {
-        private readonly SupportDbContext _context;
+        private readonly ISupportRequestRepository _repository;
 
-        public TableController(SupportDbContext context)
+        public TableController(ISupportRequestRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         public IActionResult GetAllSupportRequest()
         {
-            var requests = (from sr in _context.SupportRequests
-                join ss in _context.SupportSpecialists on sr.SupportSpecialistId equals ss.Id
-                join d in _context.Departments on ss.DepartmentId equals d.Id
-                select new SupportRequestTable()
-                {
-                    Id = sr.Id,
-                    Topic = sr.Topic,
-                    DepartmentName = d.Name,
-                    SpecialistName = ss.FullName,
-                    Status = sr.Status.StatusName
-                }).ToArray();
-
+            var requests = _repository.GetAllRequests();
             return View(requests);
         }
         
         public IActionResult GetDetails(string id)
         {
-            var request = _context.SupportRequests
-                .Include(sr => sr.Department)
-                .Include(sr => sr.SupportSpecialist)
-                .FirstOrDefault(sr => sr.Id == Guid.Parse(id));
+            var request = _repository.GetDetails(id);
             return View(request);
         }
 
         [HttpPost]
         public IActionResult UpdateStatus([FromForm]string requestId, SupportRequestStatus status)
         {
-            var request = _context.SupportRequests.FirstOrDefault(sr => sr.Id == Guid.Parse(requestId));
-            request.Status = status;
-            _context.Update(request);
-            _context.SaveChanges();
+            _repository.ChangeStatus(requestId, status);
             return NoContent();
         }
 
@@ -58,10 +43,10 @@ namespace HomeWorkMVC.Controllers
         }
         
         [HttpPost]
-        public IActionResult NewRequest([FromForm]SupportRequest supportRequest)
+        public IActionResult NewRequest([FromForm]SupportRequestCreate supportRequest)
         {
-            
-            return View("~/Views/Table/NewRequest.cshtml");
+            _repository.CreateRequest(supportRequest);
+            return View("~/Views/Home/Index.cshtml");
         }
     }
 }

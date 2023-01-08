@@ -1,6 +1,6 @@
 ﻿@using HomeWorkMVC.Service
-@model HomeWorkMVC.Models.SupportRequestStatus
-@inject GetAllStatuses GetAllStatuses
+@model HomeWorkMVC.DTO.SupportRequestCreate
+@inject GetAllSelect GetAllSelect
 
 @{
     ViewData["Title"] = "NewRequest";
@@ -13,12 +13,27 @@
       method="post"
       asp-controller="Table"
       asp-action="NewRequest">
-        <select class="form-select" aria-label="Default select example" style="width: 500px" name="status">
-            <option selected>@Model.StatusName</option>
-    
-            @foreach (var status in @GetAllStatuses.AllStatuses())
-            {
-                <select value="@status">@status</select>
-            }
-        </select>
+    <label class="mb-3">Status:</label>
+    <select class="form-select" style="width: 500px" name="RequestStatus">
+        @foreach (var status in @GetAllSelect.AllStatuses())
+        {
+            <option value="@status">@status.StatusName</option>
+        }
+    </select>
+    <label class="mb-3">Deparment:</label>
+    <select class="form-select" style="width: 500px" name="DepartmentId">
+        @foreach (var department in @GetAllSelect.AllDeparments())
+        {
+            <option value="@department.Id">@department.Name</option>
+        }
+    </select>
+    <div class="mb-3">
+        <label for="formGroupExampleInput" class="form-label">Topic</label>
+        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Topic name" name="topic">
+    </div>
+    <div class="mb-3">
+        <label for="formGroupExampleInput" class="form-label">Description</label>
+        <textarea class="form-control" name="description"></textarea>
+    </div>
+    <button class="btn btn-primary" type="submit">Save</button>
 </form>
