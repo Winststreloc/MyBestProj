@@ -1,13 +1,14 @@
-﻿@model HomeWorkMVC.Models.SupportRequest
+﻿@using HomeWorkMVC.Service
+@model HomeWorkMVC.Models.SupportRequest
+@inject GetAllStatuses GetAllStatuses
 
 @{
     ViewData["Title"] = "DetailsRequest";
 }
 
 <form method="post" asp-controller="Table"
-            asp-action="UpdateStatus"
-            onsubmit="return verifyTicketIsOpen()">
-    <input class="form-check-input disabled" name="requestId" value="@Model.Id.ToString()"/><p ></p>
+      asp-action="UpdateStatus">
+    <input class="form-check-input disabled" name="requestId" value="@Model.Id.ToString()"/>
     <p name="topic">Topic: @Model.Topic</p>
     <div class="accordion accordion-flush" id="accordionFlushExample" style="width: 500px">
         <div class="accordion-item">
@@ -24,13 +25,41 @@
 
     <p class="h5" name="fullNameSupport">Specialist: @Model.SupportSpecialist.FullName</p>
     <p class="h5" name="department">Department: @Model.Department.Name</p>
-    <input class="form-select" aria-label="Default select example" style="width: 500px" name="status" value="@Model.SupportRequestStatus"/>
-    <button type="submit" class="btn btn-success" >Save</button>
+    <select class="form-select" aria-label="Default select example" style="width: 500px" name="status">
+        <option selected>@Model.Status.ToString()</option>
+
+        @foreach (var status in @GetAllStatuses.AllStatuses())
+        {
+            <select value="@status">@status</select>
+        }
+    </select>
+    <button class="btn btn-success">Save</button>
+    <button class="send-ajax">Send</button>
 </form>
 
 
 <script>
-    const saveTicket = () => {
-        
-        }
+function SendData(){
+
+    let id = document.getElementsByName("requestId")[0].value;
+    let status = document.getElementsByName("status")[0].value;
+
+
+    fetch('http://localhost:5001/Table/UpdateStatus', {
+    method: 'POST',
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ "requestId": id.toString()  , "status": status.toString() })
+})
+.then(response => response.json())
+.then(response => console.log(JSON.stringify(response)))
+}
+
+
+document.onload(() => {
+    let buttonSend = document.getElementsByClassName("send-ajax");
+    buttonSend.onclick(SendData());
+})
 </script>

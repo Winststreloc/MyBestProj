@@ -27,7 +27,7 @@ namespace HomeWorkMVC.Controllers
                     Topic = sr.Topic,
                     DepartmentName = d.Name,
                     SpecialistName = ss.FullName,
-                    Status = sr.SupportRequestStatus
+                    Status = sr.Status.StatusName
                 }).ToArray();
 
             return View(requests);
@@ -43,12 +43,25 @@ namespace HomeWorkMVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateStatus([FromForm]string requestId, string status)
+        public IActionResult UpdateStatus([FromForm]string requestId, SupportRequestStatus status)
         {
             var request = _context.SupportRequests.FirstOrDefault(sr => sr.Id == Guid.Parse(requestId));
-            request.SupportRequestStatus = status;
-            _context.SupportRequests.Update(request);
-            return View("GetDetails(request)");
+            request.Status = status;
+            _context.Update(request);
+            _context.SaveChanges();
+            return NoContent();
+        }
+
+        public IActionResult NewRequest()
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        public IActionResult NewRequest([FromForm]SupportRequest supportRequest)
+        {
+            
+            return View("~/Views/Table/NewRequest.cshtml");
         }
     }
 }

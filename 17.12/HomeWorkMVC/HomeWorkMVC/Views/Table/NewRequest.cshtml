@@ -1,4 +1,6 @@
-﻿@model HomeWorkMVC.Models.SupportStatus
+﻿@using HomeWorkMVC.Service
+@model HomeWorkMVC.Models.SupportRequestStatus
+@inject GetAllStatuses GetAllStatuses
 
 @{
     ViewData["Title"] = "NewRequest";
@@ -7,8 +9,16 @@
 <div>
     <p>New Request</p>
 </div>
-<select></select>
-<select></select>
-<select></select>
-<select></select>
-<select></select>
+<form class="mb-3 ticket-add-form"
+      method="post"
+      asp-controller="Table"
+      asp-action="NewRequest">
+        <select class="form-select" aria-label="Default select example" style="width: 500px" name="status">
+            <option selected>@Model.StatusName</option>
+    
+            @foreach (var status in @GetAllStatuses.AllStatuses())
+            {
+                <select value="@status">@status</select>
+            }
+        </select>
+</form>

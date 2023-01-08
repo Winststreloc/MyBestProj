@@ -13,7 +13,8 @@ namespace HomeWorkMVC.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<SupportRequest> SupportRequests { get; set; }
         public DbSet<SupportSpecialist> SupportSpecialists { get; set; }
-        
+        public DbSet<SupportRequestStatus> SupportRequestStatuses { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SupportSpecialist>()
@@ -36,6 +37,12 @@ namespace HomeWorkMVC.Data
                 .WithMany(x => x.SupportRequests)
                 .HasForeignKey(x => x.DepartmentId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<SupportRequestStatus>()
+                .HasKey(srs => srs.Id);
+            modelBuilder.Entity<SupportRequest>()
+                .HasOne(sr => sr.Status)
+                .WithMany(srr => srr.SupportRequests);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

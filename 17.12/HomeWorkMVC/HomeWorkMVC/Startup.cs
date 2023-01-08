@@ -1,4 +1,5 @@
 using HomeWorkMVC.Data;
+using HomeWorkMVC.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,7 @@ namespace HomeWorkMVC
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+            services.AddScoped<GetAllStatuses>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
