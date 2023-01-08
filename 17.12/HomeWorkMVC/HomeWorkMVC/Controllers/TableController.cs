@@ -32,7 +32,7 @@ namespace HomeWorkMVC.Controllers
 
             return View(requests);
         }
-
+        
         public IActionResult GetDetails(string id)
         {
             var request = _context.SupportRequests
@@ -40,6 +40,15 @@ namespace HomeWorkMVC.Controllers
                 .Include(sr => sr.SupportSpecialist)
                 .FirstOrDefault(sr => sr.Id == Guid.Parse(id));
             return View(request);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateStatus([FromForm]string requestId, string status)
+        {
+            var request = _context.SupportRequests.FirstOrDefault(sr => sr.Id == Guid.Parse(requestId));
+            request.SupportRequestStatus = status;
+            _context.SupportRequests.Update(request);
+            return View("GetDetails(request)");
         }
     }
 }
